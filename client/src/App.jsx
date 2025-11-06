@@ -31,26 +31,22 @@ export default function App() {
       asignee: 'Adolfo'
     }
   ]
-
+  const [showModal, setShowModal] = useState(false);
   const [data, setData] = useState(dummyData);
-  console.log(data)
-  function addTask(){
-    const newData = {
-      description: 'Hello test',
-      status: {
-        percentage: 0,
-        label: 'En Proceso'
-      },
-      asignee: 'Johan'
-    }
+
+  function onAddTask(task){
     console.log("added dummy")
-    setData(dummyData => [...dummyData, newData])
+    console.log(task);
+    setData(dummyData => [...dummyData, task])
   }
+
   return(
     <>
       <Table data={data}/>
-      <Button text="+ Agregar Tarea" fn={addTask}/>
-      <NewTaskForm/>
+      <Button text="+ Agregar Tarea" fn={() => setShowModal(true)}/>
+      {showModal && (
+        <NewTaskForm setShowModal={setShowModal} onAddTask={onAddTask}/>
+      )}
     </>
   )
 }

@@ -1,7 +1,7 @@
 import './Button.css';
 
-export default function Button({text, fn}) {
+export default function Button({type, text, fn}) {
   return(
-    <button onClick={fn}>{text}</button>
+    <button type={type || "button"} onClick={fn}>{text}</button>
   );
 }
