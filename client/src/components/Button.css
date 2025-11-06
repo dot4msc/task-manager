@@ -1,0 +1,14 @@
+button {
+  background-color: rgb(92, 2, 117);
+  color: white;
+  border: none;
+  box-shadow: none;
+  padding: 10px;
+  font-weight: 600;
+  font-size: larger;
+  border-radius: 10px;
+  display: block;
+  box-sizing: border-box;
+  margin: auto;
+  margin-top: 15px;
+}

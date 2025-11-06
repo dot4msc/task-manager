@@ -1,35 +1,56 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import "./App.css"
+import Button from "./components/Button"
+import NewTaskForm from "./components/modals/NewTaskForm"
+import Table from "./components/Table"
+import { useState } from "react"
 
-function App() {
-  const [count, setCount] = useState(0)
+export default function App() {
+  const dummyData = [
+    {
+      description: 'Instalar solar wing',
+      status: {
+        percentage: 0,
+        label: 'En Proceso'
+      },
+      asignee: 'Vicente',
+    },
+    {
+      description: 'Conectar plogas',
+      status: {
+        percentage: 50,
+        label: 'En proceso'
+      },
+      asignee: 'Mariano'
+    },
+    {
+      description: 'Instalar Faros 9\"',
+      status: {
+        percentage: 100,
+        label: 'Completado'
+      },
+      asignee: 'Adolfo'
+    }
+  ]
 
-  return (
+  const [data, setData] = useState(dummyData);
+  console.log(data)
+  function addTask(){
+    const newData = {
+      description: 'Hello test',
+      status: {
+        percentage: 0,
+        label: 'En Proceso'
+      },
+      asignee: 'Johan'
+    }
+    console.log("added dummy")
+    setData(dummyData => [...dummyData, newData])
+  }
+  return(
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <Table data={data}/>
+      <Button text="+ Agregar Tarea" fn={addTask}/>
+      <NewTaskForm/>
     </>
   )
 }
-
-export default App
