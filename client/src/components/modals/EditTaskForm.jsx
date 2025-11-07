@@ -3,7 +3,6 @@ import './EditTaskForm.css'
 import Button from '../Button'
 
 export default function EditTaskForm({task, onSave, onClose}) {
-  console.log(task);
   const [percentage, setPercentage] = useState(task.status.percentage);
   const [label, setLabel] = useState(task.status.label);
   const [description, setDescription] = useState(task.description);
@@ -24,28 +23,25 @@ export default function EditTaskForm({task, onSave, onClose}) {
 
   function handleSubmit(e){
     e.preventDefault();
-    console.log(percentage + " " + label + " " + description + " " + asignee)
     if([label, description, asignee].some(field => !field)) {
       console.log("Please enter all values")
       return;
     }
-    const task ={
-      description: description,
+
+    const updatedTask = {
+      ...task,
+      description,
+      asignee,
       status: {
-        label: label,
-        percentage: percentage
-      },
-      asignee: asignee
-    };
+        ...task.status,
+        percentage,
+        label
+      }
+    }
 
-    onSave(task);
+    onSave(updatedTask);
   }
 
-  function handleCancel(e){
-    e.preventDefault();
-    setShowModal(false);
-  }
-  
   return (
     <div className='modal-overlay'>
       <div className='modal'>

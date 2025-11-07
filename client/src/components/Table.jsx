@@ -1,8 +1,10 @@
 import { useReactTable, getCoreRowModel, flexRender } from '@tanstack/react-table'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import "./Table.css"
 import EditTaskForm from './modals/EditTaskForm';
+
 export default function Table({data}) {
+
   const [tasks, setTasks] = useState(data);
   const [selectedTask, setSelectedTask] = useState(null);
 
@@ -14,7 +16,7 @@ export default function Table({data}) {
   ])
 
   const table = useReactTable({
-    data,
+    data: tasks,
     columns,
     getCoreRowModel: getCoreRowModel(),
   })
@@ -24,9 +26,21 @@ export default function Table({data}) {
   }
 
   function handleSave(updatedTask) {
-    setTasks((prev) => prev.map((t) => (t.id == updatedTask.id ? updatedTask : t)))
+    setTasks((prev) => prev.map((t) => {
+      if(t._id == updatedTask._id) {
+        return updatedTask;
+      }
+      else {
+        return t
+      }
+    }))
+
     setSelectedTask(null)
   }
+
+  useEffect(() => {
+    console.log("Tasks changed: ", tasks);
+  }, [tasks])
 
   return (
     <>
