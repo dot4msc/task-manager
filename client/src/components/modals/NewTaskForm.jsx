@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './NewTaskForm.css'
 import Button from '../Button'
 
@@ -10,7 +10,7 @@ export default function NewTaskForm({setShowModal, onAddTask}) {
   const [asignee, setAsignee] = useState("");
 
   const [selectStyle, setSelectStyle] = useState({backgroundColor: "yellow", color: "darkorange"});
-
+  
   function handleSelect(e) {
     if(e.target.value === "EN PROCESO"){
       setSelectStyle({backgroundColor: "yellow", color:"darkorange"})

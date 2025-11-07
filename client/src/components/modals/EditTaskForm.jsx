@@ -9,7 +9,7 @@ export default function EditTaskForm({task, onSave, onClose}) {
   const [description, setDescription] = useState(task.description);
   const [asignee, setAsignee] = useState(task.asignee);
 
-  const [selectStyle, setSelectStyle] = useState(task.status.label === "EN PROCESO" ? {backgroundColor: "yellow", color: "darkorange"} : {backgroundColor: "green", color: "darkgreen"});
+  const [selectStyle, setSelectStyle] = useState(task.status.label === "EN PROCESO" ? {backgroundColor: "yellow", color: "darkorange"} : {backgroundColor: "lightgreen", color: "darkgreen"});
 
   function handleSelect(e) {
     if(e.target.value === "EN PROCESO"){
@@ -72,7 +72,7 @@ export default function EditTaskForm({task, onSave, onClose}) {
           <input value={asignee} onChange={(e) => setAsignee(e.target.value)} id = "asignee-input" type='text'/>
 
           <div className='control-buttons'>
-            <Button type="submit" fn={handleSubmit} text=" &#128393; Modificar Tarea"/>
+            <Button type="submit" fn={handleSubmit} text="Guardar Cambios"/>
             <Button fn={onClose} text="Cancelar"/>
           </div>
         </form>
