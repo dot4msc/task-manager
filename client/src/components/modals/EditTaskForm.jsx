@@ -1,15 +1,15 @@
 import { useState } from 'react'
-import './NewTaskForm.css'
+import './EditTaskForm.css'
 import Button from '../Button'
 
-export default function NewTaskForm({setShowModal, onAddTask}) {
+export default function EditTaskForm({task, onSave, onClose}) {
+  console.log(task);
+  const [percentage, setPercentage] = useState(task.status.percentage);
+  const [label, setLabel] = useState(task.status.label);
+  const [description, setDescription] = useState(task.description);
+  const [asignee, setAsignee] = useState(task.asignee);
 
-  const [percentage, setPercentage] = useState(0);
-  const [label, setLabel] = useState("EN PROCESO");
-  const [description, setDescription] = useState("");
-  const [asignee, setAsignee] = useState("");
-
-  const [selectStyle, setSelectStyle] = useState({backgroundColor: "yellow", color: "darkorange"});
+  const [selectStyle, setSelectStyle] = useState(task.status.label === "EN PROCESO" ? {backgroundColor: "yellow", color: "darkorange"} : {backgroundColor: "green", color: "darkgreen"});
 
   function handleSelect(e) {
     if(e.target.value === "EN PROCESO"){
@@ -38,8 +38,7 @@ export default function NewTaskForm({setShowModal, onAddTask}) {
       asignee: asignee
     };
 
-    setShowModal(false);
-    onAddTask(task);
+    onSave(task);
   }
 
   function handleCancel(e){
@@ -73,8 +72,8 @@ export default function NewTaskForm({setShowModal, onAddTask}) {
           <input value={asignee} onChange={(e) => setAsignee(e.target.value)} id = "asignee-input" type='text'/>
 
           <div className='control-buttons'>
-            <Button type="submit" fn={handleSubmit} text="+ Agregar Tarea"/>
-            <Button fn={handleCancel} text="Cancelar"/>
+            <Button type="submit" fn={handleSubmit} text=" &#128393; Modificar Tarea"/>
+            <Button fn={onClose} text="Cancelar"/>
           </div>
         </form>
       </div>

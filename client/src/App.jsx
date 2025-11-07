@@ -10,7 +10,7 @@ export default function App() {
       description: 'Instalar solar wing',
       status: {
         percentage: 0,
-        label: 'En Proceso'
+        label: 'EN PROCESO'
       },
       asignee: 'Vicente',
     },
@@ -18,7 +18,7 @@ export default function App() {
       description: 'Conectar plogas',
       status: {
         percentage: 50,
-        label: 'En proceso'
+        label: 'EN PROCESO'
       },
       asignee: 'Mariano'
     },
@@ -26,7 +26,7 @@ export default function App() {
       description: 'Instalar Faros 9\"',
       status: {
         percentage: 100,
-        label: 'Completado'
+        label: 'COMPLETADO'
       },
       asignee: 'Adolfo'
     }
