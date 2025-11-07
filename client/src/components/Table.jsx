@@ -35,6 +35,21 @@ export default function Table({data}) {
       }
     }))
 
+    fetch(`${import.meta.env.VITE_SERVER_URL}/${updatedTask._id}`, {
+      method: "PUT",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(updatedTask),
+    })
+      .then(res => {
+        if(!res.ok) {
+          throw new Error(res.status)
+        }
+      })
+      .then(data => console.log("Got data: ", data))
+      .catch(error => console.error(error));
+    
     setSelectedTask(null)
   }
 
