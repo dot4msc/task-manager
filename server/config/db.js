@@ -8,4 +8,4 @@ mongoose.connect(process.env.MONGODB_URI, {dbName: 'task-manager',})
     console.error("Error connecting:", err);
   })
 
-module.exports = mongoose;
+module.exports = { mongoose} ;
