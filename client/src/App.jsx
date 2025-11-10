@@ -24,7 +24,24 @@ export default function App() {
   },[])
 
   function onAddTask(task){
-    setData(apiData => [...apiData, task])
+
+    fetch(import.meta.env.VITE_SERVER_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(task),
+    })
+      .then(res=>{
+        if(!res.ok){
+          throw new Error(res.statusText + ": " + res.status);
+        }
+        return res.json()
+      })
+      .then((data) => {
+        setData(apiData => [...apiData, data])
+      })
+      .catch(error => console.log(error))
   }
 
   if (loading) return <p>Loading...</p>;

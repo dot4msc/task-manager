@@ -24,11 +24,13 @@ export default function NewTaskForm({setShowModal, onAddTask}) {
 
   function handleSubmit(e){
     e.preventDefault();
+
     console.log(percentage + " " + label + " " + description + " " + asignee)
     if([label, description, asignee].some(field => !field)) {
       console.log("Please enter all values")
       return;
     }
+
     const task ={
       description: description,
       status: {
@@ -37,7 +39,7 @@ export default function NewTaskForm({setShowModal, onAddTask}) {
       },
       asignee: asignee
     };
-
+    
     setShowModal(false);
     onAddTask(task);
   }

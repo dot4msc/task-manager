@@ -21,7 +21,7 @@ export default function EditTaskForm({task, onSave, onClose}) {
     setLabel(e.target.value);
   }
 
-  function handleSubmit(e){
+  function handleSubmit(e) {
     e.preventDefault();
     if([label, description, asignee].some(field => !field)) {
       console.log("Please enter all values")

@@ -6,9 +6,9 @@ import DeleteButton from './DeleteButton';
 
 export default function Table({data}) {
 
-  const [tasks, setTasks] = useState(data);
+  const [_tasks, setTasks] = useState(data);
   const [selectedTask, setSelectedTask] = useState(null);
-
+  
   const columns = useMemo(() => [
     { header: '#', cell: info => info.row.index + 1},
     { header: 'Estatus', accessorFn: row => row.status.percentage},
@@ -18,7 +18,7 @@ export default function Table({data}) {
   ])
 
   const table = useReactTable({
-    data: tasks,
+    data,
     columns,
     getCoreRowModel: getCoreRowModel(),
   })
