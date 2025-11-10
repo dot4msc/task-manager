@@ -2,6 +2,7 @@ import { useReactTable, getCoreRowModel, flexRender } from '@tanstack/react-tabl
 import { useEffect, useMemo, useState } from 'react'
 import "./Table.css"
 import EditTaskForm from './modals/EditTaskForm';
+import DeleteButton from './DeleteButton';
 
 export default function Table({data}) {
 
@@ -13,6 +14,7 @@ export default function Table({data}) {
     { header: 'Estatus', accessorFn: row => row.status.percentage},
     { header: 'Descripción', accessorKey: 'description'},
     { header: 'Asignación', accessorKey: 'asignee'},
+    { header: 'Borrar', cell: info => <DeleteButton onDelete={(e) => handleDelete(e,info)}/>}
   ])
 
   const table = useReactTable({
@@ -20,6 +22,22 @@ export default function Table({data}) {
     columns,
     getCoreRowModel: getCoreRowModel(),
   })
+
+  function handleDelete(e,info) {
+    e.stopPropagation();
+    setTasks((prev) => prev.filter(task => task._id !== info.row.original._id))
+
+    fetch(`${import.meta.env.VITE_SERVER_URL}/${info.row.original._id}`,{
+      method: 'DELETE'
+    })
+      .then(res => {
+        if(!res.ok) {
+          throw new Error(res.statusText);
+        }
+      })
+      .catch((error) => console.log(error))
+    
+  }
 
   function handleRowClick(row) {
     setSelectedTask(row.original);
@@ -53,10 +71,7 @@ export default function Table({data}) {
     setSelectedTask(null)
   }
 
-  useEffect(() => {
-    console.log("Tasks changed: ", tasks);
-  }, [tasks])
-
+ 
   return (
     <>
       <table className="task-table">
@@ -73,6 +88,7 @@ export default function Table({data}) {
         </thead>
         <tbody>
           {table.getRowModel().rows.map(row => (
+            
             <tr onClick={() => handleRowClick(row)} key={row.id}>
               {row.getVisibleCells().map(cell => (
                 <td key={cell.id}>
