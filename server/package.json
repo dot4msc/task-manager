@@ -2,7 +2,7 @@
   "name": "server",
   "packageManager": "yarn@1.22.2",
   "scripts": {
-    "start": "node --env-file=.env server.js",
+    "start": "node server.js",
     "dev": "nodemon --env-file=.env server.js"
   },
   "dependencies": {
