@@ -28,7 +28,6 @@ export default function Table({data, onDelete, onSave}) {
 
   function handleDelete(e,info) {
     e.stopPropagation();
-    console.log();
     onDelete(info);
   }
 
