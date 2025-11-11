@@ -5,7 +5,7 @@ import EditTaskForm from './modals/EditTaskForm';
 import DeleteButton from './DeleteButton';
 import ErrorAlert from './errors/ErrorAlert';
 
-export default function Table({data}) {
+export default function Table({data, onDelete, onSave}) {
 
   const [_tasks, setTasks] = useState(data);
   const [selectedTask, setSelectedTask] = useState(null);
@@ -26,24 +26,9 @@ export default function Table({data}) {
     getCoreRowModel: getCoreRowModel(),
   })
 
-  function handleDelete(e,info) {
-    e.stopPropagation();
-    setTasks((prev) => prev.filter(task => task._id !== info.row.original._id))
-
-    fetch(`${import.meta.env.VITE_SERVER_URL}/${info.row.original._id}`,{
-      method: 'DELETE'
-    })
-      .then(res => {
-        if(!res.ok) {
-          setIsError(true);
-          setErrorMessage(`Error (${res.status}): ${res.statusText}`)
-        }
-      })
-      .catch((error) => {
-        setIsError(true);
-        setErrorMessage(`Error (${error.name}): ${error.message}`);
-      })
-    
+  function handleDelete(info) {
+    console.log();
+    onDelete(info);
   }
 
   function handleRowClick(row) {
@@ -51,35 +36,7 @@ export default function Table({data}) {
   }
 
   function handleSave(updatedTask) {
-    setTasks((prev) => prev.map((t) => {
-      if(t._id == updatedTask._id) {
-        return updatedTask;
-      }
-      else {
-        return t
-      }
-    }))
-
-    fetch(`${import.meta.env.VITE_SERVER_URL}/${updatedTask._id}`, {
-      method: "PUT",
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(updatedTask),
-    })
-      .then(res => {
-        if(!res.ok) {
-          setIsError(true);
-          setErrorMessage(`Error (${res.status}): ${res.statusText}`)
-        }
-        return res.json()
-      })
-      .then(data => console.log("Got data: ", data))
-      .catch(error => {
-        setIsError(true);
-        setErrorMessage(`Error (${error.name}): ${error.message}`);
-      });
-    
+    onSave(updatedTask)
     setSelectedTask(null)
   }
 
