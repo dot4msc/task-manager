@@ -26,7 +26,8 @@ export default function Table({data, onDelete, onSave}) {
     getCoreRowModel: getCoreRowModel(),
   })
 
-  function handleDelete(info) {
+  function handleDelete(e,info) {
+    e.stopPropagation();
     console.log();
     onDelete(info);
   }
