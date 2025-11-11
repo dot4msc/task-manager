@@ -1,14 +1,17 @@
 import { useReactTable, getCoreRowModel, flexRender } from '@tanstack/react-table'
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import "./Table.css"
 import EditTaskForm from './modals/EditTaskForm';
 import DeleteButton from './DeleteButton';
+import ErrorAlert from './errors/ErrorAlert';
 
 export default function Table({data}) {
 
   const [_tasks, setTasks] = useState(data);
   const [selectedTask, setSelectedTask] = useState(null);
-  
+  const [isError, setIsError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
   const columns = useMemo(() => [
     { header: '#', cell: info => info.row.index + 1},
     { header: 'Estatus', accessorFn: row => row.status.percentage},
@@ -32,10 +35,14 @@ export default function Table({data}) {
     })
       .then(res => {
         if(!res.ok) {
-          throw new Error(res.statusText);
+          setIsError(true);
+          setErrorMessage(`Error (${res.status}): ${res.statusText}`)
         }
       })
-      .catch((error) => console.log(error))
+      .catch((error) => {
+        setIsError(true);
+        setErrorMessage(`Error (${error.name}): ${error.message}`);
+      })
     
   }
 
@@ -62,11 +69,16 @@ export default function Table({data}) {
     })
       .then(res => {
         if(!res.ok) {
-          throw new Error(res.status)
+          setIsError(true);
+          setErrorMessage(`Error (${res.status}): ${res.statusText}`)
         }
+        return res.json()
       })
       .then(data => console.log("Got data: ", data))
-      .catch(error => console.error(error));
+      .catch(error => {
+        setIsError(true);
+        setErrorMessage(`Error (${error.name}): ${error.message}`);
+      });
     
     setSelectedTask(null)
   }
@@ -105,6 +117,9 @@ export default function Table({data}) {
           onSave={handleSave}
           onClose={() => setSelectedTask(null)}
         />
+      )}
+      {isError && (
+        <ErrorAlert onClick={() => setIsError(false)}>{errorMessage}</ErrorAlert>
       )}
     </>
   )

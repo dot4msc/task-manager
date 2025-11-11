@@ -1,14 +1,16 @@
 import { useState } from 'react'
 import './EditTaskForm.css'
 import Button from '../Button'
+import ErrorAlert from '../errors/ErrorAlert';
 
 export default function EditTaskForm({task, onSave, onClose}) {
   const [percentage, setPercentage] = useState(task.status.percentage);
   const [label, setLabel] = useState(task.status.label);
   const [description, setDescription] = useState(task.description);
   const [asignee, setAsignee] = useState(task.asignee);
-
   const [selectStyle, setSelectStyle] = useState(task.status.label === "EN PROCESO" ? {backgroundColor: "yellow", color: "darkorange"} : {backgroundColor: "lightgreen", color: "darkgreen"});
+  const [isError, setIsError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   function handleSelect(e) {
     if(e.target.value === "EN PROCESO"){
@@ -24,7 +26,8 @@ export default function EditTaskForm({task, onSave, onClose}) {
   function handleSubmit(e) {
     e.preventDefault();
     if([label, description, asignee].some(field => !field)) {
-      console.log("Please enter all values")
+      setIsError(true);
+      setErrorMessage("Error (No Empty Values): Please fill out all the fields");
       return;
     }
 
@@ -43,36 +46,42 @@ export default function EditTaskForm({task, onSave, onClose}) {
   }
 
   return (
-    <div className='modal-overlay'>
-      <div className='modal'>
-        <form>
-          <label htmlFor="percentage-input">Porcentaje: (0-100)</label>
-          <input value={percentage} onChange= {(e) => setPercentage(e.target.value)}id="percentage-input" type="number" placeholder="(0-100)"/>
+    <>
 
-          <br/>
+      <div className='modal-overlay'>
+        <div className='modal'>
+          <form>
+            <label htmlFor="percentage-input">Porcentaje: (0-100)</label>
+            <input value={percentage} onChange= {(e) => setPercentage(e.target.value)}id="percentage-input" type="number" placeholder="(0-100)"/>
 
-          <label htmlFor="status-select">Estatus: </label>
-          <select value={label} onChange={handleSelect} style={selectStyle} id="status-select">
-            <option style={{backgroundColor: "yellow", color: "darkorange"}} value="EN PROCESO">EN PROCESO</option>
-            <option style={{backgroundColor: "lightgreen", color: "darkgreen"}} value="COMPLETADO">COMPLETADO</option>
-          </select>
+            <br/>
 
-          <br/>
+            <label htmlFor="status-select">Estatus: </label>
+            <select value={label} onChange={handleSelect} style={selectStyle} id="status-select">
+              <option style={{backgroundColor: "yellow", color: "darkorange"}} value="EN PROCESO">EN PROCESO</option>
+              <option style={{backgroundColor: "lightgreen", color: "darkgreen"}} value="COMPLETADO">COMPLETADO</option>
+            </select>
 
-          <label htmlFor="description-textarea">Descripción: </label>
-          <textarea value={description} onChange={(e) => setDescription(e.target.value)} rows={10} id="description-textarea" placeholder='Descripción'></textarea>
-          
-          <br/>
+            <br/>
 
-          <label htmlFor="asignee-input">Asignee: </label>
-          <input value={asignee} onChange={(e) => setAsignee(e.target.value)} id = "asignee-input" type='text'/>
+            <label htmlFor="description-textarea">Descripción: </label>
+            <textarea value={description} onChange={(e) => setDescription(e.target.value)} rows={10} id="description-textarea" placeholder='Descripción'></textarea>
+            
+            <br/>
 
-          <div className='control-buttons'>
-            <Button type="submit" fn={handleSubmit} text="Guardar Cambios"/>
-            <Button fn={onClose} text="Cancelar"/>
-          </div>
-        </form>
+            <label htmlFor="asignee-input">Asignee: </label>
+            <input value={asignee} onChange={(e) => setAsignee(e.target.value)} id = "asignee-input" type='text'/>
+
+            <div className='control-buttons'>
+              <Button type="submit" fn={handleSubmit} text="Guardar Cambios"/>
+              <Button fn={onClose} text="Cancelar"/>
+            </div>
+          </form>
+        </div>
       </div>
-    </div>
+      {isError && (
+        <ErrorAlert onClick={() => setIsError(false)}>{errorMessage}</ErrorAlert>
+      )}
+    </>
   )
 }
